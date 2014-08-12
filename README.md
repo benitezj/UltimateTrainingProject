@@ -1,24 +1,24 @@
-****Info about Reception Helper Applicaiton ****
+FUNCTIONALITY:
 
-*****Application Functionality:
+-register new vehicles, 
+-search for vehicle owners, 
+-send automatic email messages within the company domain
+-list incident history
+
 -Secure Login:
 *users must be registered in the database
 *login times out after 10 minutes
 *user account is locked after 5 login attempts in 1 minute or 15 in 1 day.
 
--Admin account 'ultimate', registered by default, can:
-*register new users
-*register new company employees (owners of vehicles)
-
--Users can:
-*register new vehicles, 
-*search for vehicle owners, 
-*send automatic email messages within the company domain
-*list incident history
+-Admin account 'ultimate', registered by default for:
+*adding new users
+*registering new employees 
 
 
-********Installation:
-1) MySQL, PHP, python should be installed on host
+
+INSTALLATION:
+
+1) MySQL, PHP, python, python-mysql, should be installed on host
 
 2) MySQL initialization:
 -Create the database and tables:
@@ -36,11 +36,12 @@ python dbConfig.py --loadEmployees EmployeeData.txt
 -Load vehicles:
 python dbConfig.py --loadVehicles VehicleData.txt
 
+3) Move ReceptionHelperAp folder to public web space.
 
-3) Move ReceptionHelper folder to public web space.
 
 
-*******Package command line tools:
+COMMAND LINE TOOLS:
+
 -list Ap users:
 python dbConfig.py --listApUsers
 -list employees:
