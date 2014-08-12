@@ -1,8 +1,9 @@
 # FUNCTIONALITY:
--register new vehicles, 
--search for vehicle owners, 
--send automatic email messages within the company domain
--list incident history
+- register new vehicles, 
+- search for vehicle owners, 
+- send automatic email messages within the company domain
+- list incident history
+
 -Secure Login:
 *users must be registered in the database
 *login times out after 10 minutes
