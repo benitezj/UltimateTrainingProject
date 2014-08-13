@@ -3,23 +3,18 @@ include 'globals.php';
 if($db->check_loggin($_SESSION['username'],$loggintimeout)){
 ?>
  
-
 <a href="home.php">Home</a> 
 &nbsp; &nbsp; &nbsp; 
 <a href="Logout.php"> Logout </a>
 <br> <br>
-
 
 <?php
 
 $employeeid = $_POST["employeeid"] ;
 $firstname = $_POST["firstname"] ;
 $lastname = $_POST["lastname"] ;
-$email = $_POST["email"]   ;
+$email = $_POST["email"] ;
 $extension = $_POST["extension"] ;
-
-//connect to mysql
-$con = connect_db();
 
 //check if vehicle already registered
 $checkquery = "SELECT ID,FIRST,LAST FROM EMPLOYEES WHERE ID=" . $employeeid ;

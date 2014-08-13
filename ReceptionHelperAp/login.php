@@ -4,6 +4,7 @@ include 'globals.php';
 $username = $_POST['username'];
 $password = $_POST['password'];
 
+//echo "login: $username $password<br>";
  
 //query the db to match the username
 $passwquery = "SELECT ID,PASSWORD FROM USERS WHERE USERNAME = '" . $username . "'";
@@ -36,17 +37,17 @@ if($passwresult->num_rows == 0){
    $row = mysqli_fetch_array($passwresult);
    if($password == $row['PASSWORD']){ 
      //direct to home page
-     header('location: home.php');
+     header('refresh:1 ;  url=home.php');
    
      //register user loggin in db
      if(!$db->register_loggin($username,1))
        direct_to_login(2,"Failed to register loggin in db. Loggin failed.");	
        
      //register user in the session 
-     session_register('username');
+     //session_register('username'); //deprecated in php5
      $_SESSION['username'] = $username;
 
- 	
+     echo "Successful login.";	
    }else {
     //password does not match
     //register incident
