@@ -25,7 +25,6 @@
   - Load vehicles: `python dbConfig.py --loadVehicles VehicleData.txt`
 4. Move ReceptionHelperAp folder to public web space.
 
-
 **COMMAND LINE TOOLS**:
 
 - list Ap users: `python dbConfig.py --listApUsers`
