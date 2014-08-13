@@ -19,7 +19,7 @@ Employee First Name: <input type="text" name="firstname" size=20 maxlength=20>
 <br>
 Employee Last Name: <input type="text" name="lastname" size=20 maxlength=20> 
 <br>
-Employee email: <input type="text" name="email" size=20 maxlength=20> 
+Employee email: <input type="text" name="email" size=40 maxlength=40> 
 <br>
 Employee extension: <input type="number" name="extension" size=3 maxlength=3> 
 <br>

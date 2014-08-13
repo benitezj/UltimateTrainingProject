@@ -14,14 +14,13 @@
 
 **INSTALLATION**:
 
-1. MySQL, PHP, python, python-mysql, should be installed on host
-2. MySQL initialization:
-  - Create the database and tables: `python dbConfig.py --createDB`
-  - Create user of the database needed by application: `python dbConfig.py --createDBuser`
-If running these again one needs to add the --force option.
-
+1. MySQL, PHP5, python, python-mysql, should be installed on host
+2. Ap initialization:
+  - create the database and tables: `python dbConfig.py --createDB`
+  - create admin account: `python dbConfig.py --createDBuser`
+  - If running above steps again one needs to add the --force option.
 3. (optional) 
-  - Load application users: `python dbConfig.py --loadApUsers UsersData.txt`
+  - Load users: `python dbConfig.py --loadApUsers UsersData.txt`
   - Load employees: `python dbConfig.py --loadEmployees EmployeeData.txt`
   - Load vehicles: `python dbConfig.py --loadVehicles VehicleData.txt`
 4. Move ReceptionHelperAp folder to public web space.

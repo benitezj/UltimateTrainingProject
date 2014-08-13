@@ -2,19 +2,26 @@
 
 class dbInterface{
       
-   private $con;
-   public $connected = false;
-   
+   private $con = NULL;
 
    function __construct($host="",$user="",$passwd="",$DB=""){
-    $this->con = mysqli_connect($host,$user,$passwd,$DB);
-    if (mysqli_connect_errno()) $this->connected = false; 
-    else $this->connected = true;
-   }      
+       //echo $host.$user.$passwd.$DB;
+       $this->con = mysqli_connect($host,$user,$passwd,$DB);
+       if(mysqli_connect_error())  echo "Error connecting to db.<br>";
+       //if(mysqli_ping($this->con)) echo "Connected.";
+    }      
 
    function __destruct(){
-     if($this->connected) mysqli_close($this->con);
+     if($this->connected()) mysqli_close($this->con);
    }
+
+   function connected(){
+    //return is_resource($this->con);
+
+    //this one tries to reconnect
+    if(! mysqli_ping($this->con) ) return  mysqli_ping($this->con) ;
+    else return true;
+   }  
 
    function query($query){
      return mysqli_query($this->con,$query);
@@ -23,21 +30,22 @@ class dbInterface{
    //log user into database
    function register_loggin($username,$success){
       $query = "INSERT INTO LOGGINS (USERNAME,TIME,SUCCESS) VALUES ('" . $username . "'," . time() . "," . $success . ")"; 
-      if(!mysqli_query($this->con,$query)) return false;
+      if(!$this->query($query)) return false;
       return true;
    }  
 
    //log out user 
    function logout_user($username){	 
       $query = "INSERT INTO LOGGINS (USERNAME,TIME,SUCCESS) VALUES ('" . $username . "'," . time() . ",0)"; 
-      if(!mysqli_query($this->con,$query)) return false;
-       return true;	 
+      if(!$this->query($query)) return false;
+      return true;	 
    }
 
    //check if user is logged in
    function check_loggin($username,$timeout){
       $query = "SELECT * FROM LOGGINS WHERE USERNAME='" . $username . "' && TIME>" . (time()-$timeout) ;
-      $result = mysqli_query($this->con, $query);
+      $result = $this->query($query);
+      if(!$result) echo "query failed <br>";
    
       //find the latest entry, could have been a login (1) or a logout (0) 
       $time = 0;
@@ -45,7 +53,7 @@ class dbInterface{
       while($row = mysqli_fetch_array($result)) {
          if($row['TIME'] > $time){	
            $time = $row['TIME'];     
-           $success = $row['SUCCESS'];
+           $success = ((bool) $row['SUCCESS']);
          } 
        }
    
@@ -56,7 +64,7 @@ class dbInterface{
    //count number of login attempts	
    function get_login_failures($username,$period){
       $query = "SELECT * FROM LOGGINS WHERE USERNAME='" . $username . "' && TIME>" . (time()-$period) . " && SUCCESS=0"; 
-      $result = mysqli_query($this->con, $query);
+      $result = $this->query( $query);
       $number = $result->num_rows;   
       $result->close();	
 
@@ -66,14 +74,13 @@ class dbInterface{
    //record incident in history table
    function record_incident($tag,$email,$message){
       $query = "INSERT INTO HISTORY (TIME,TAG,EMAIL,MESSAGE) VALUES (" . time()  . ",'" . $tag . "','" . $email . "','" . $message . "')" ; 
-      if(!mysqli_query($this->con,$query)) return false;
+      if(!$this->query($query)) return false;
       return true;	 
    }
 
-
    //display all incidents
    function print_incidents(){
-      $result = mysqli_query($this->con,"SELECT * FROM HISTORY");
+      $result = $this->query("SELECT * FROM HISTORY");
       
       while($row = mysqli_fetch_array($result)) {
         $date = date("Y-m-d H:i:s", $row['TIME']);
@@ -87,7 +94,7 @@ class dbInterface{
   
    //display all loggins
    function print_loggins(){
-      $result = mysqli_query($this->con,"SELECT * FROM LOGGINS");
+      $result = $this->query("SELECT * FROM LOGGINS");
    
       while($row = mysqli_fetch_array($result)) {
         echo $row['USERNAME'] . " " . $row['TIME'] . " " . $row['SUCCESS'];
@@ -101,7 +108,7 @@ class dbInterface{
    
    //function to display the Vehicles in the database
    function print_Vehicles(){
-      $result = mysqli_query($this->con,"SELECT * FROM VEHICLES");
+      $result = $this->query("SELECT * FROM VEHICLES");
       while($row = mysqli_fetch_array($result)) {
         echo $row['TAG'] . " " . $row['MODEL'] . " " . $row['EMPLOYEE'];
         echo "<br>";
@@ -112,7 +119,7 @@ class dbInterface{
    
    //function to display the Employees in the database
    function print_Employees(){
-      $result = mysqli_query($this->con,"SELECT * FROM EMPLOYEES");
+      $result = $this->query("SELECT * FROM EMPLOYEES");
       while($row = mysqli_fetch_array($result)) {
          echo $row['ID'] . " " . $row['FIRST'] . " " . $row['LAST'];
          echo "<br>";
